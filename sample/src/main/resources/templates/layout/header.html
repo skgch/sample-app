@@ -1,0 +1,19 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<body>
+    <header class="navbar fixed-top navbar-dark bg-dark"
+        layout:fragment="header">
+        <div class="container">
+            <a id="logo" th:href="@{/}">sample app</a>
+            <nav>
+                <ul class="navbar-nav navbar-expand-sm">
+                    <li><a class="header-item" th:href="@{/}">Home</a></li>
+                    <li><a class="header-item" th:href="@{/help}">Help</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+</body>
+</html>

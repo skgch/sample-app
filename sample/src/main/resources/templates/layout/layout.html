@@ -1,0 +1,24 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>SpringBoot Sample App</title>
+    <link th:href="@{/css/application.css}" rel="stylesheet"></link>
+
+    <!-- for bootstrap -->
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet"></link>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script th:href="@{/bootstrap/js/bootstrap.min.js}"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div layout:replace="layout/header::header"></div>
+        <div layout:fragment="content"></div>
+        <div layout:replace="layout/footer::footer"></div>
+    </div>
+</body>
+
+</html>

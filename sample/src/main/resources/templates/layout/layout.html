@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="UTF-8" />
-    <title>SpringBoot Sample App</title>
+    <title th:text="${#applicationHelper.fullTitle(title)}"></title>
     <link th:href="@{/css/application.css}" rel="stylesheet"></link>
 
     <!-- for bootstrap -->

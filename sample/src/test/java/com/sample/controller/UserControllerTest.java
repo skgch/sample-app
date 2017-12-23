@@ -14,7 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class UsersControllerTest {
+public class UserControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -24,4 +24,5 @@ public class UsersControllerTest {
         mockMvc.perform(get("/signup"))
         .andExpect(status().isOk());
     }
+
 }

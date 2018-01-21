@@ -1,0 +1,2 @@
+insert into user (id, username, password, email) values (1, 'user', 'password', 'user1@example.com');
+insert into user (id, username, password, email) values (2, 'test', 'testpass', 'user2@example.com');

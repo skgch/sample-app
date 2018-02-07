@@ -45,11 +45,15 @@ public class UserService implements UserDetailsService {
         return user;
     }
 
-    public User save(User user) {
-        String email = user.getEmail().toLowerCase();
+    public User save(String username, String email, String password) {
+        User user = new User();
+
+        user.setUsername(username);
+
+        email = email.toLowerCase();
         user.setEmail(email);
 
-        String passwordDigest = passwordEncoder.encode(user.getPassword());
+        String passwordDigest = passwordEncoder.encode(password);
         user.setPassword(passwordDigest);
 
         return repository.saveAndFlush(user);

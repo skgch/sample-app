@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.sample.dto.SignUpFormDto;
 import com.sample.entity.User;
 import com.sample.service.UserService;
 
@@ -29,20 +30,20 @@ public class UserController {
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public ModelAndView create(@ModelAttribute("formModel") @Validated User user,
+    public ModelAndView create(@ModelAttribute("formModel") @Validated SignUpFormDto formDto,
             BindingResult result, ModelAndView mav) {
         mav.setViewName(TEMPLATE_DIR + "/signUp");
         mav.addObject("title", "Sign Up");
 
         if (!result.hasErrors()) {
-            service.save(user);
+            service.save(formDto.getUsername(), formDto.getEmail(), formDto.getPassword());
             // test
             Iterable<User> users = service.findAll();
             mav.addObject("users", users);
             return mav;
         }
 
-        return new ModelAndView("redirect:/");
+        return new ModelAndView("redirect:/signup");
     }
 
     @RequestMapping(value = "user/{id}")

@@ -84,3 +84,22 @@ footer li {
 #spring-logo {
     width: 20%;
 }
+
+/* sidebar */
+
+aside section.user_info {
+    margin-top: 20px;
+}
+
+aside section {
+    padding: 10px 0;
+    margin-top: 20px;
+}
+
+aside section h1  {
+    font-size: 1.4em;
+    text-align: left;
+    letter-spacing: -1px;
+    margin-bottom: 3px;
+    margin-top: 0px;
+}

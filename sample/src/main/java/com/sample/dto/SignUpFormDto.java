@@ -4,6 +4,9 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.sample.validator.PasswordMatches;
+
+@PasswordMatches
 public class SignUpFormDto {
 
 	@NotEmpty
@@ -19,7 +22,6 @@ public class SignUpFormDto {
 	@Length(min = 6)
 	private String password;
 
-	// TODO Password Validation
 	@NotEmpty
 	private String passwordConfirmation;
 

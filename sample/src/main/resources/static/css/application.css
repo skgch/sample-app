@@ -23,6 +23,11 @@ h1 {
     text-align: center;
 }
 
+p {
+  font-size: 1.1em;
+  line-height: 1.7em;
+}
+
 /* header */
 #logo {
     float: left;
@@ -85,8 +90,20 @@ footer li {
     width: 20%;
 }
 
-/* sidebar */
+/* forms */
+form input {
+    border: 1px solid #bbb;
+    width: 100%;
+    margin-bottom: 10px;
+}
 
+form label {
+    display: inline-block;
+    margin-bottom: 2px;
+    font-weight: bold;
+}
+
+/* sidebar */
 aside section.user_info {
     margin-top: 20px;
 }

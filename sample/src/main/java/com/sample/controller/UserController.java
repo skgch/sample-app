@@ -26,6 +26,7 @@ public class UserController {
     public ModelAndView signUp(ModelAndView mav) {
         mav.setViewName(TEMPLATE_DIR + "/signUp");
         mav.addObject("title", "Sign Up");
+        mav.addObject("formModel", new SignUpFormDto());
         return mav;
     }
 
@@ -35,7 +36,13 @@ public class UserController {
         mav.setViewName(TEMPLATE_DIR + "/signUp");
         mav.addObject("title", "Sign Up");
 
-        if (!result.hasErrors()) {
+        if(result.hasErrors()) {
+            mav.addObject("formDto", formDto);
+            return mav;
+            //return new ModelAndView("redirect:/signup");
+        }
+
+        else {
             service.save(formDto.getUsername(), formDto.getEmail(), formDto.getPassword());
             // test
             Iterable<User> users = service.findAll();
@@ -43,7 +50,6 @@ public class UserController {
             return mav;
         }
 
-        return new ModelAndView("redirect:/signup");
     }
 
     @RequestMapping(value = "user/{id}")

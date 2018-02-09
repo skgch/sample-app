@@ -28,21 +28,22 @@ public class UserController {
     public ModelAndView signUp(ModelAndView mav) {
         mav.setViewName(TEMPLATE_DIR + "/signUp");
         mav.addObject("title", "Sign Up");
-        mav.addObject("formModel", new SignUpFormDto());
+        mav.addObject("formDto", new SignUpFormDto());
         return mav;
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public String create(@ModelAttribute("formModel") @Validated SignUpFormDto formDto,
+    public String create(@ModelAttribute("formDto") @Validated SignUpFormDto formDto,
             BindingResult result, Model model, RedirectAttributes redirectAttrs) {
 		if (result.hasErrors()) {
-			model.addAttribute("formModel", formDto);
+			model.addAttribute("formDto", formDto);
+			model.addAttribute("title", "Sign Up");
 			return TEMPLATE_DIR + "/signUp";
 		}
 
 		User user = service.save(formDto.getUsername(), formDto.getEmail(), formDto.getPassword());
 		redirectAttrs.addFlashAttribute("flash", "Welcome to the Sample App!");
-		// TODO Redirect to user page insted of home page
+		// TODO Redirect to user page instead of home page
 		return "redirect:/";
     }
 

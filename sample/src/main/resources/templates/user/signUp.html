@@ -10,18 +10,23 @@
         <div class="row">
             <div class="col-md-6 offset-md-3">
                 <form method="post" action="/signup" th:object="${formModel}">
-                    <ul>
-                        <li th:each="error : ${#fields.detailedErrors()}" th:text="${error}"></li>
+                    <div th:if="${#fields.hasAnyErrors()}" class="alert alert-danger">
+                        <span th:text="'The form contains ' + ${#fields.errors().size()}"></span>
+                        <span th:if="${#fields.errors().size()} > 1"> erros.</span>
+                        <span th:if="${#fields.errors().size()} == 1"> error.</span>
+                    </div>
+                    <ul th:if="${#fields.hasAnyErrors()}">
+                        <li th:each="error : ${#fields.detailedErrors()}" th:text="${error}" class="err-msg"></li>
                     </ul>
-                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
                     <label for="username">Username</label>
-                    <input type="text" name="username"/>
+                    <input type="text" name="username" th:field="*{username}"/>
                     <label for="email">Email</label>
-                    <input type="text" name="email"/>
+                    <input type="text" name="email" th:field="*{email}"/>
                     <label for="password">Password</label>
-                    <input type="password" name="password"/>
+                    <input type="password" name="password" th:field="*{password}"/>
                     <label for="passwordConfirmation">Confirmation</label>
-                    <input type="password" name="passwordConfirmation"/>
+                    <input type="password" name="passwordConfirmation" th:field="*{passwordConfirmation}"/>
                     <input type="submit" class="btn btn-primary" value="Create my account"/>
                 </form>
             </div>

@@ -35,16 +35,16 @@ public class UserController {
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
     public String create(@ModelAttribute("formDto") @Validated SignUpFormDto formDto,
             BindingResult result, Model model, RedirectAttributes redirectAttrs) {
-		if (result.hasErrors()) {
-			model.addAttribute("formDto", formDto);
-			model.addAttribute("title", "Sign Up");
-			return TEMPLATE_DIR + "/signUp";
-		}
+        if (result.hasErrors()) {
+            model.addAttribute("formDto", formDto);
+            model.addAttribute("title", "Sign Up");
+            return TEMPLATE_DIR + "/signUp";
+        }
 
-		User user = service.save(formDto.getUsername(), formDto.getEmail(), formDto.getPassword());
-		redirectAttrs.addFlashAttribute("flash", "Welcome to the Sample App!");
-		// TODO Redirect to user page instead of home page
-		return "redirect:/";
+        User user = service.save(formDto.getUsername(), formDto.getEmail(), formDto.getPassword());
+        redirectAttrs.addFlashAttribute("flash", "Welcome to the Sample App!");
+        // TODO Redirect to user page instead of home page
+        return "redirect:/";
     }
 
     @RequestMapping(value = "user/{id}")
@@ -53,6 +53,6 @@ public class UserController {
         User user = service.findById(id);
         mav.addObject("user", user);
         return mav;
-
     }
+
 }

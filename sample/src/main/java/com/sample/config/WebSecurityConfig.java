@@ -38,7 +38,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .usernameParameter("username")
                 .passwordParameter("password")
                 .failureUrl("/login?error")
-                .defaultSuccessUrl("/") // TODO To User page instead of home page
+                .defaultSuccessUrl("/default")
                 .permitAll()
                 .and();
 

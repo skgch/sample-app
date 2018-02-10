@@ -11,7 +11,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import com.sample.handler.SampleAuthenticationFailureHandler;
 import com.sample.service.UserService;
 
 @Configuration
@@ -36,10 +35,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .loginProcessingUrl("/login")
                 .loginPage("/login")
-                .failureHandler(new SampleAuthenticationFailureHandler())
                 .usernameParameter("username")
                 .passwordParameter("password")
-                .defaultSuccessUrl("/")
+                .failureUrl("/login?error")
+                .defaultSuccessUrl("/") // TODO To User page instead of home page
+                .permitAll()
                 .and();
 
         http

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.sample.dto.Flash;
 import com.sample.dto.SignUpFormDto;
 import com.sample.entity.User;
 import com.sample.service.UserService;
@@ -42,7 +43,8 @@ public class UserController {
         }
 
         User user = service.save(formDto.getUsername(), formDto.getEmail(), formDto.getPassword());
-        redirectAttrs.addFlashAttribute("flash", "Welcome to the Sample App!");
+        Flash flash = new Flash(true, "Welcome to the Sample App!");
+        redirectAttrs.addFlashAttribute("flash", flash);
         // TODO Redirect to user page instead of home page
         return "redirect:/";
     }

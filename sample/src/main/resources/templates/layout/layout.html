@@ -15,7 +15,8 @@
 
 <body>
     <div class="container">
-        <div th:if="${flash}" th:text="${flash}" class="alert alert-success">success</div>
+        <div th:if="${flash}" th:text="${flash.message}"
+            class="alert" th:classappend="${flash.successFlag} ? alert-success : alert-danger"></div>
         <div layout:replace="layout/header::header"></div>
         <div layout:fragment="content"></div>
         <div layout:replace="layout/footer::footer"></div>

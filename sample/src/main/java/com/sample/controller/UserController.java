@@ -15,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.sample.dto.Flash;
 import com.sample.dto.SignUpFormDto;
 import com.sample.entity.User;
+import com.sample.service.SessionService;
 import com.sample.service.UserService;
 
 @Controller
@@ -22,6 +23,9 @@ public class UserController {
 
     @Autowired
     private UserService service;
+
+    @Autowired
+    private SessionService sessionService;
 
     private static final String TEMPLATE_DIR = "user";
 
@@ -43,10 +47,12 @@ public class UserController {
         }
 
         User user = service.save(formDto.getUsername(), formDto.getEmail(), formDto.getPassword());
+        sessionService.autoLogin(formDto.getUsername(), formDto.getPassword());
+
         Flash flash = new Flash(true, "Welcome to the Sample App!");
         redirectAttrs.addFlashAttribute("flash", flash);
-        // TODO Redirect to user page instead of home page
-        return "redirect:/";
+
+        return "redirect:/user/" + user.getId();
     }
 
     @RequestMapping(value = "user/{id}")

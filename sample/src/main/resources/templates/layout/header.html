@@ -1,21 +1,35 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <body>
-    <header class="navbar fixed-top navbar-dark bg-dark"
-        layout:fragment="header">
-        <div class="container">
-            <a id="logo" th:href="@{/}">sample app</a>
-            <nav>
-                <ul class="navbar-nav navbar-expand-sm">
-                    <li><a class="header-item" th:href="@{/}">Home</a></li>
-                    <li><a class="header-item" th:href="@{/help}">Help</a></li>
-                    <li><a class="header-item" th:href="@{/login}">Log in</a></li>
-                    <li><a class="header-item" th:href="@{/logout}">Log out</a></li>
+
+  <header class="fixed-top" layout:fragment="header">
+    <nav class="navbar navbar-toggleable-sm navbar-inverse bg-inverse">
+      <div class="container d-flex justify-content-end">
+        <a id="logo" th:href="@{/}" class="mr-auto">sample app</a>
+        <div>
+          <ul class="navbar-nav mr-auto">
+            <li><a class="nav-link" th:href="@{/}">Home</a></li>
+            <li><a class="nav-link" th:href="@{/help}">Help</a></li>
+            <th:block sec:authorize="isAuthenticated()">
+              <li><a class="nav-link" href="#">Users</a></li>
+              <li class="dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Account<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" th:href="@{'/user/' + ${#authentication.principal.id}}">Profile</a></li>
+                  <li><a class="dropdown-item" href="#">Settings</a></li>
+                  <li class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" th:href="@{/logout}">Log out</a></li>
                 </ul>
-            </nav>
+              </li>
+            </th:block>
+          </ul>
         </div>
-    </header>
+      </div>
+    </nav>
+  </header>
+  s
 </body>
 </html>

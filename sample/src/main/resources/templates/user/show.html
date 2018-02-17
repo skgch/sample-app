@@ -9,7 +9,10 @@
         <div class="row">
           <aside class="col-mid-4">
             <section class="user_info">
-                <h1 th:text="*{username}"></h1>
+              <h1 th:inline="text">
+                <img th:src="${#userHelper.gravatarFor(user)}" class="gravatar"/>
+                [[${user.username}]]
+              </h1>
             </section>
           </aside>
         </div>

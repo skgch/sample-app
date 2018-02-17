@@ -15,6 +15,7 @@ public class ApplicationDialect extends AbstractDialect implements IExpressionEn
     static {
       Map<String, Object> objects = new HashMap<>();
       objects.put("applicationHelper", new ApplicationUtility());
+      objects.put("userHelper", new UserUtility());
       EXPRESSION_OBJECTS = Collections.unmodifiableMap(objects);
     }
 

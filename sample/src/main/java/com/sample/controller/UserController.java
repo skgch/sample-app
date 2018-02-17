@@ -59,6 +59,7 @@ public class UserController {
     public ModelAndView show(@PathVariable("id") int id, ModelAndView mav) {
         mav.setViewName(TEMPLATE_DIR + "/show");
         User user = service.findById(id);
+        mav.addObject("title", user.getUsername());
         mav.addObject("user", user);
         return mav;
     }

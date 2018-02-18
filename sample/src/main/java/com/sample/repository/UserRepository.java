@@ -9,6 +9,6 @@ import com.sample.entity.User;
 public interface UserRepository extends JpaRepository<User, Integer>{
 
     public User findById(int id);
-    public User findByUsername(String username);
+    public User findByEmail(String email);
 
 }

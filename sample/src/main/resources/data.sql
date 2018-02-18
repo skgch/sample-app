@@ -1,2 +1,2 @@
-insert into user (id, username, password, email) values (1, 'user', '$2a$10$o6YTYYrChOUfk6hdHslQC.AUyASUvR1R22xpmi/n4QxcTzyxREIeq', 'user1@example.com');
-insert into user (id, username, password, email) values (2, 'test', '$2a$10$.xIISu8SIytPuDSEdt1SAO5/u6OAUPxclgl7fu8mTHwSzdrq7z9H2', 'user2@example.com');
+insert into user (id, name, password, email) values (1, 'user', '$2a$10$o6YTYYrChOUfk6hdHslQC.AUyASUvR1R22xpmi/n4QxcTzyxREIeq', 'user1@example.com');
+insert into user (id, name, password, email) values (2, 'test', '$2a$10$.xIISu8SIytPuDSEdt1SAO5/u6OAUPxclgl7fu8mTHwSzdrq7z9H2', 'user2@example.com');

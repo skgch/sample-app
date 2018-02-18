@@ -46,8 +46,8 @@ public class UserController {
             return TEMPLATE_DIR + "/signUp";
         }
 
-        User user = service.save(formDto.getUsername(), formDto.getEmail(), formDto.getPassword());
-        sessionService.autoLogin(formDto.getUsername(), formDto.getPassword());
+        User user = service.save(formDto.getName(), formDto.getEmail(), formDto.getPassword());
+        sessionService.autoLogin(formDto.getEmail().toLowerCase(), formDto.getPassword());
 
         Flash flash = new Flash(true, "Welcome to the Sample App!");
         redirectAttrs.addFlashAttribute("flash", flash);
@@ -59,7 +59,7 @@ public class UserController {
     public ModelAndView show(@PathVariable("id") int id, ModelAndView mav) {
         mav.setViewName(TEMPLATE_DIR + "/show");
         User user = service.findById(id);
-        mav.addObject("title", user.getUsername());
+        mav.addObject("title", user.getName());
         mav.addObject("user", user);
         return mav;
     }

@@ -17,8 +17,8 @@ public class SessionService {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    public void autoLogin(String username, String password) {
-        UserDetails userDetails = userService.loadUserByUsername(username);
+    public void autoLogin(String email, String password) {
+        UserDetails userDetails = userService.loadUserByUsername(email);
         UsernamePasswordAuthenticationToken token
             = new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
         Authentication authentication = authenticationManager.authenticate(token);

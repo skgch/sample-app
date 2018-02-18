@@ -6,19 +6,20 @@
     <meta charset="UTF-8" />
     <title th:text="${#applicationHelper.fullTitle(title)}"></title>
     <link th:href="@{/css/application.css}" rel="stylesheet"></link>
-
-    <!-- for bootstrap -->
-    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet"></link>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script th:href="@{/bootstrap/js/bootstrap.min.js}"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"></link>
 </head>
 
 <body>
     <div class="container">
+        <div th:if="${flash}" th:text="${flash.message}"
+            class="alert" th:classappend="${flash.successFlag} ? alert-success : alert-danger"></div>
         <div layout:replace="layout/header::header"></div>
         <div layout:fragment="content"></div>
         <div layout:replace="layout/footer::footer"></div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
 </body>
 
 </html>

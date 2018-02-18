@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorator="layout/layout">
+
+<body>
+
+    <div layout:fragment="content" th:object="${user}">
+        <div class="row">
+          <aside class="col-mid-4">
+            <section class="user_info">
+              <h1 th:inline="text">
+                <img th:src="${#userHelper.gravatarFor(user)}" class="gravatar"/>
+                [[${user.username}]]
+              </h1>
+            </section>
+          </aside>
+        </div>
+    </div>
+
+</body>
+
+</html>

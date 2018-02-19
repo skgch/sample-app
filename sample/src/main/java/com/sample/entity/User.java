@@ -25,7 +25,7 @@ public class User extends TimestampEntity implements UserDetails {
 
     @Column(length = 50)
     @NotEmpty
-    private String username;
+    private String name;
 
     @Column(length = 255, unique = true)
     @NotEmpty
@@ -35,6 +35,11 @@ public class User extends TimestampEntity implements UserDetails {
     @Column
     private String password;
 
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
     public int getId() {
         return id;
     }
@@ -43,13 +48,12 @@ public class User extends TimestampEntity implements UserDetails {
         this.id = id;
     }
 
-    @Override
-    public String getUsername() {
-        return username;
+    public String getName() {
+        return name;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {

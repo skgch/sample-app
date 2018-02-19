@@ -31,24 +31,24 @@ public class UserService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        if(StringUtils.isEmpty(username)) {
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        if(StringUtils.isEmpty(email)) {
             throw new UsernameNotFoundException("username is empty");
         }
 
-        User user = repository.findByUsername(username);
+        User user = repository.findByEmail(email);
 
         if(user == null) {
-            throw new UsernameNotFoundException("user [" + username + "] is not found");
+            throw new UsernameNotFoundException("user not found for name: " + email);
         }
 
         return user;
     }
 
-    public User save(String username, String email, String password) {
+    public User save(String name, String email, String password) {
         User user = new User();
 
-        user.setUsername(username);
+        user.setName(name);
 
         email = email.toLowerCase();
         user.setEmail(email);

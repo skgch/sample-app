@@ -64,4 +64,24 @@ public class UserController {
         return mav;
     }
 
+    @RequestMapping(value = "user/{id}/edit")
+    public ModelAndView edit(@PathVariable("id") int id, ModelAndView mav) {
+        mav.setViewName(TEMPLATE_DIR + "/edit");
+        mav.addObject("title", "Edit");
+
+        User user = service.findById(id);
+        SignUpFormDto formDto = new SignUpFormDto();
+        formDto.setName(user.getName());
+        formDto.setEmail(user.getEmail());
+        mav.addObject("formDto", formDto);
+
+        mav.addObject("user", user);
+        return mav;
+    }
+
+    @RequestMapping(value = "user/{id}", method = RequestMethod.POST)
+    public String update() {
+        // TODO
+        return "staticPages/home";
+    }
 }

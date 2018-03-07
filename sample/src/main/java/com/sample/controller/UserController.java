@@ -34,6 +34,8 @@ public class UserController {
         mav.setViewName(TEMPLATE_DIR + "/signUp");
         mav.addObject("title", "Sign Up");
         mav.addObject("formDto", new SignUpFormDto());
+        mav.addObject("uri", "/signup");
+        mav.addObject("buttonText", "Create my account");
         return mav;
     }
 
@@ -43,6 +45,8 @@ public class UserController {
         if (result.hasErrors()) {
             model.addAttribute("formDto", formDto);
             model.addAttribute("title", "Sign Up");
+            model.addAttribute("uri", "/signup");
+            model.addAttribute("buttonText", "Create my account");
             return TEMPLATE_DIR + "/signUp";
         }
 
@@ -68,6 +72,7 @@ public class UserController {
     public ModelAndView edit(@PathVariable("id") int id, ModelAndView mav) {
         mav.setViewName(TEMPLATE_DIR + "/edit");
         mav.addObject("title", "Edit");
+        mav.addObject("buttonText", "Save Changes");
 
         User user = service.findById(id);
         SignUpFormDto formDto = new SignUpFormDto();
@@ -76,6 +81,7 @@ public class UserController {
         mav.addObject("formDto", formDto);
 
         mav.addObject("user", user);
+        mav.addObject("uri", "/user/" + user.getId());
         return mav;
     }
 

@@ -86,8 +86,24 @@ public class UserController {
     }
 
     @RequestMapping(value = "user/{id}", method = RequestMethod.POST)
-    public String update() {
-        // TODO
-        return "staticPages/home";
+    public String update(@PathVariable("id") int id,
+                @ModelAttribute("formDto") @Validated SignUpFormDto formDto,
+                BindingResult result, Model model, RedirectAttributes redirectAttrs) {
+        if (result.hasErrors()) {
+            model.addAttribute("formDto", formDto);
+            model.addAttribute("title", "Edit");
+            model.addAttribute("uri", "/user/" + id);
+            model.addAttribute("buttonText", "Save Changes");
+            User user = service.findById(id);
+            model.addAttribute("user", user);
+            return TEMPLATE_DIR + "/edit";
+        }
+
+        User user = service.update(id, formDto.getName(), formDto.getEmail(), formDto.getPassword());
+
+        Flash flash = new Flash(true, "Profile updated");
+        redirectAttrs.addFlashAttribute("flash", flash);
+
+        return "redirect:/user/" + user.getId();
     }
 }

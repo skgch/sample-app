@@ -32,13 +32,13 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        if(StringUtils.isEmpty(email)) {
+        if (StringUtils.isEmpty(email)) {
             throw new UsernameNotFoundException("username is empty");
         }
 
         User user = repository.findByEmail(email);
 
-        if(user == null) {
+        if (user == null) {
             throw new UsernameNotFoundException("user not found for name: " + email);
         }
 
@@ -47,16 +47,30 @@ public class UserService implements UserDetailsService {
 
     public User save(String name, String email, String password) {
         User user = new User();
-
         user.setName(name);
-
-        email = email.toLowerCase();
         user.setEmail(email);
-
-        String passwordDigest = passwordEncoder.encode(password);
-        user.setPassword(passwordDigest);
-
+        user.setPassword(password);
+        beforeSave(user);
         return repository.saveAndFlush(user);
     }
 
+    public User update(int id, String name, String email, String password) {
+        User user = repository.findById(id);
+        user.setName(name);
+        user.setEmail(email);
+        user.setPassword(password);
+        beforeSave(user);
+        return repository.saveAndFlush(user);
+    }
+
+    private User beforeSave(User user) {
+        String email = user.getEmail().toLowerCase();
+        user.setEmail(email);
+
+        String password = user.getPassword();
+        String passwordDigest = passwordEncoder.encode(password);
+        user.setPassword(passwordDigest);
+
+        return user;
+    }
 }

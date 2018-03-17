@@ -86,6 +86,14 @@ footer li {
   padding-left: 15px;
 }
 
+.gravatar_edit {
+  margin-top: 15px;
+}
+
+.gravatar_edit_img {
+  padding-left: 0px;
+}
+
 /* forms */
 form input {
   border: 1px solid #bbb;

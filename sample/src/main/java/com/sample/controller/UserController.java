@@ -1,6 +1,7 @@
 package com.sample.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -34,6 +35,8 @@ public class UserController {
         mav.setViewName(TEMPLATE_DIR + "/signUp");
         mav.addObject("title", "Sign Up");
         mav.addObject("formDto", new SignUpFormDto());
+        mav.addObject("uri", "/signup");
+        mav.addObject("buttonText", "Create my account");
         return mav;
     }
 
@@ -43,6 +46,8 @@ public class UserController {
         if (result.hasErrors()) {
             model.addAttribute("formDto", formDto);
             model.addAttribute("title", "Sign Up");
+            model.addAttribute("uri", "/signup");
+            model.addAttribute("buttonText", "Create my account");
             return TEMPLATE_DIR + "/signUp";
         }
 
@@ -64,4 +69,54 @@ public class UserController {
         return mav;
     }
 
+    @RequestMapping(value = "user/{id}/edit")
+    public String edit(@PathVariable("id") int id, Model model) {
+        if (!isCorrectUser(id)) {
+            return "redirect:/";
+        }
+
+        model.addAttribute("title", "Edit");
+        model.addAttribute("buttonText", "Save Changes");
+
+        User user = service.findById(id);
+        SignUpFormDto formDto = new SignUpFormDto();
+        formDto.setName(user.getName());
+        formDto.setEmail(user.getEmail());
+        model.addAttribute("formDto", formDto);
+
+        model.addAttribute("user", user);
+        model.addAttribute("uri", "/user/" + user.getId());
+        return TEMPLATE_DIR + "/edit";
+    }
+
+    @RequestMapping(value = "user/{id}", method = RequestMethod.POST)
+    public String update(@PathVariable("id") int id,
+                @ModelAttribute("formDto") @Validated SignUpFormDto formDto,
+                BindingResult result, Model model, RedirectAttributes redirectAttrs) {
+        if (!isCorrectUser(id)) {
+            return "redirect:/";
+        }
+
+        if (result.hasErrors()) {
+            model.addAttribute("formDto", formDto);
+            model.addAttribute("title", "Edit");
+            model.addAttribute("uri", "/user/" + id);
+            model.addAttribute("buttonText", "Save Changes");
+            User user = service.findById(id);
+            model.addAttribute("user", user);
+            return TEMPLATE_DIR + "/edit";
+        }
+
+        User user = service.update(id, formDto.getName(), formDto.getEmail(), formDto.getPassword());
+
+        Flash flash = new Flash(true, "Profile updated");
+        redirectAttrs.addFlashAttribute("flash", flash);
+
+        return "redirect:/user/" + user.getId();
+    }
+
+    private boolean isCorrectUser(int id) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return (id == user.getId());
+    }
 }

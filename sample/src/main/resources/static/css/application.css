@@ -137,3 +137,15 @@ aside section h1 {
   margin-bottom: 3px;
   margin-top: 0px;
 }
+
+/* Users index */
+.users {
+  list-style: none;
+  margin: 0;
+}
+
+.users li {
+  overflow: auto;
+  padding: 10px 0;
+  border-bottom: 1px solid #eaeaea;
+}

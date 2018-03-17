@@ -11,7 +11,7 @@
             <div class="col-md-6 offset-md-3">
                 <div layout:replace="user/form::form"></div>
                 <div class="gravatar_edit">
-                    <img th:src="${#userHelper.gravatarFor(user)}" class="gravatar gravatar_edit_img"/>
+                    <img th:src="${#userHelper.gravatarFor(user, 80)}" class="gravatar gravatar_edit_img"/>
                     <a href="http://gravatar.com/emails" target="_blank" rel="noopener">change</a>
                 </div>
             </div>

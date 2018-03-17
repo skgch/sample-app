@@ -1,5 +1,7 @@
 package com.sample.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -29,6 +31,14 @@ public class UserController {
     private SessionService sessionService;
 
     private static final String TEMPLATE_DIR = "user";
+
+    @RequestMapping(value = "/user")
+    public String idex(Model model) {
+        model.addAttribute("title", "All users");
+        List<User> users = (List<User>) service.findAll();
+        model.addAttribute("users", users);
+        return TEMPLATE_DIR + "/index";
+    }
 
     @RequestMapping(value = "/signup")
     public ModelAndView signUp(ModelAndView mav) {

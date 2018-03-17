@@ -1,6 +1,7 @@
 package com.sample.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -69,26 +70,33 @@ public class UserController {
     }
 
     @RequestMapping(value = "user/{id}/edit")
-    public ModelAndView edit(@PathVariable("id") int id, ModelAndView mav) {
-        mav.setViewName(TEMPLATE_DIR + "/edit");
-        mav.addObject("title", "Edit");
-        mav.addObject("buttonText", "Save Changes");
+    public String edit(@PathVariable("id") int id, Model model) {
+        if (!isCorrectUser(id)) {
+            return "redirect:/";
+        }
+
+        model.addAttribute("title", "Edit");
+        model.addAttribute("buttonText", "Save Changes");
 
         User user = service.findById(id);
         SignUpFormDto formDto = new SignUpFormDto();
         formDto.setName(user.getName());
         formDto.setEmail(user.getEmail());
-        mav.addObject("formDto", formDto);
+        model.addAttribute("formDto", formDto);
 
-        mav.addObject("user", user);
-        mav.addObject("uri", "/user/" + user.getId());
-        return mav;
+        model.addAttribute("user", user);
+        model.addAttribute("uri", "/user/" + user.getId());
+        return TEMPLATE_DIR + "/edit";
     }
 
     @RequestMapping(value = "user/{id}", method = RequestMethod.POST)
     public String update(@PathVariable("id") int id,
                 @ModelAttribute("formDto") @Validated SignUpFormDto formDto,
                 BindingResult result, Model model, RedirectAttributes redirectAttrs) {
+        if (!isCorrectUser(id)) {
+            return "redirect:/";
+        }
+
         if (result.hasErrors()) {
             model.addAttribute("formDto", formDto);
             model.addAttribute("title", "Edit");
@@ -105,5 +113,10 @@ public class UserController {
         redirectAttrs.addFlashAttribute("flash", flash);
 
         return "redirect:/user/" + user.getId();
+    }
+
+    private boolean isCorrectUser(int id) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return (id == user.getId());
     }
 }

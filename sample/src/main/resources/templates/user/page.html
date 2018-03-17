@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<body>
+  <nav th:flagment="page">
+    <ul class="pagination pagenation-bar">
+      <li class="page-item" th:classappend="${page.first} ? 'disabled':''">
+        <span class="page-link" th:if="${page.first}">Previous</span>
+        <a class="page-link" th:if="${not page.first}" th:href="@{${url}(page=(${page.number}-1))}">Previous</a>
+      </li>
+      <li class="page-item" th:each="i : ${#numbers.sequence(0, page.totalPages-1)}"
+        th:classappend="${i}==${page.number} ? 'active':''">
+        <a class="page-link" th:href="@{${url}(page=${i})}" th:text="${i+1}"></a>
+      </li>
+      <li class="page-item" th:classappend="${page.last} ? 'disabled':''">
+        <span class="page-link" th:if="${page.last}">Next</span>
+        <a class="page-link" th:if="${not page.last}" th:href="@{${url}(page=(${page.number}+1))}">Next</a>
+      </li>
+    </ul>
+  </nav>
+</body>
+
+</html>

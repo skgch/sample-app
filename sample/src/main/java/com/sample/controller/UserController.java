@@ -3,6 +3,8 @@ package com.sample.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,9 +35,12 @@ public class UserController {
     private static final String TEMPLATE_DIR = "user";
 
     @RequestMapping(value = "/user")
-    public String idex(Model model) {
+    public String idex(Model model, Pageable pageable) {
         model.addAttribute("title", "All users");
-        List<User> users = (List<User>) service.findAll();
+//        List<User> users = (List<User>) service.findAll();
+        Page<User> page = service.findAll(pageable);
+        List<User> users = page.getContent();
+        model.addAttribute("page", page);
         model.addAttribute("users", users);
         return TEMPLATE_DIR + "/index";
     }

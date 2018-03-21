@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,7 +38,6 @@ public class UserController {
     @RequestMapping(value = "/user")
     public String idex(Model model, Pageable pageable) {
         model.addAttribute("title", "All users");
-//        List<User> users = (List<User>) service.findAll();
         Page<User> page = service.findAll(pageable);
         List<User> users = page.getContent();
         model.addAttribute("page", page);
@@ -130,8 +130,18 @@ public class UserController {
         return "redirect:/user/" + user.getId();
     }
 
+    @PreAuthorize("hasRole('ADMIN') and #id != principal.id")
+    @RequestMapping(value = "user/{id}", method = RequestMethod.DELETE)
+    public String delete(@PathVariable("id") int id, RedirectAttributes redirectAttrs) {
+            service.delete(id);
+            Flash flash = new Flash(true, "User deleted");
+            redirectAttrs.addFlashAttribute("flash", flash);
+            return "redirect:/";
+    }
+
     private boolean isCorrectUser(int id) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return (id == user.getId());
     }
+
 }

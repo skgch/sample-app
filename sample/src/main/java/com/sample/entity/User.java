@@ -1,5 +1,6 @@
 package com.sample.entity;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.persistence.Column;
@@ -12,6 +13,7 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
@@ -34,6 +36,9 @@ public class User extends TimestampEntity implements UserDetails {
 
     @Column
     private String password;
+
+    @Column
+    private String role;
 
     @Override
     public String getUsername() {
@@ -73,9 +78,19 @@ public class User extends TimestampEntity implements UserDetails {
         this.password = password;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        Collection<GrantedAuthority> authorityList = new ArrayList<>();
+        authorityList.add(new SimpleGrantedAuthority("ROLE_" + this.role));
+        return authorityList;
     }
 
     @Override

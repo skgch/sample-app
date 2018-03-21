@@ -69,6 +69,10 @@ public class UserService implements UserDetailsService {
         return repository.saveAndFlush(user);
     }
 
+    public void delete(int id) {
+        repository.delete(id);
+    }
+
     private User beforeSave(User user) {
         String email = user.getEmail().toLowerCase();
         user.setEmail(email);
@@ -77,6 +81,7 @@ public class UserService implements UserDetailsService {
         String passwordDigest = passwordEncoder.encode(password);
         user.setPassword(passwordDigest);
 
+        user.setRole("ROLE_USER");
         return user;
     }
 }

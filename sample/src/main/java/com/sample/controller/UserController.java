@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -84,12 +83,9 @@ public class UserController {
         return mav;
     }
 
+    @PreAuthorize("#id == principal.id")
     @RequestMapping(value = "user/{id}/edit")
     public String edit(@PathVariable("id") int id, Model model) {
-        if (!isCorrectUser(id)) {
-            return "redirect:/";
-        }
-
         model.addAttribute("title", "Edit");
         model.addAttribute("buttonText", "Save Changes");
 
@@ -104,14 +100,11 @@ public class UserController {
         return TEMPLATE_DIR + "/edit";
     }
 
+    @PreAuthorize("#id == principal.id")
     @RequestMapping(value = "user/{id}", method = RequestMethod.POST)
     public String update(@PathVariable("id") int id,
                 @ModelAttribute("formDto") @Validated SignUpFormDto formDto,
                 BindingResult result, Model model, RedirectAttributes redirectAttrs) {
-        if (!isCorrectUser(id)) {
-            return "redirect:/";
-        }
-
         if (result.hasErrors()) {
             model.addAttribute("formDto", formDto);
             model.addAttribute("title", "Edit");
@@ -137,11 +130,6 @@ public class UserController {
             Flash flash = new Flash(true, "User deleted");
             redirectAttrs.addFlashAttribute("flash", flash);
             return "redirect:/";
-    }
-
-    private boolean isCorrectUser(int id) {
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return (id == user.getId());
     }
 
 }

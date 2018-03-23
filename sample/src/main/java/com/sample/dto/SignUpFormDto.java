@@ -4,10 +4,17 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.sample.validator.PasswordLength;
 import com.sample.validator.PasswordMatches;
 
 @PasswordMatches
 public class SignUpFormDto {
+
+    public static interface SignUp {
+    }
+
+    public static interface Edit {
+    }
 
     @NotEmpty
     @Length(max = 50)
@@ -18,11 +25,10 @@ public class SignUpFormDto {
     @Email
     private String email;
 
-    @NotEmpty
-    @Length(min = 6)
+    @Length(min = 6, groups = {SignUp.class})
+    @PasswordLength(groups = {Edit.class})
     private String password;
 
-    @NotEmpty
     private String passwordConfirmation;
 
     public String getName() {

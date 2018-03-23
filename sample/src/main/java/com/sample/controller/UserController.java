@@ -2,6 +2,8 @@ package com.sample.controller;
 
 import java.util.List;
 
+import javax.validation.groups.Default;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +21,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sample.dto.Flash;
 import com.sample.dto.SignUpFormDto;
+import com.sample.dto.SignUpFormDto.Edit;
+import com.sample.dto.SignUpFormDto.SignUp;
 import com.sample.entity.User;
 import com.sample.service.SessionService;
 import com.sample.service.UserService;
@@ -55,7 +59,8 @@ public class UserController {
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public String create(@ModelAttribute("formDto") @Validated SignUpFormDto formDto,
+    public String create(@ModelAttribute("formDto")
+            @Validated({Default.class, SignUp.class}) SignUpFormDto formDto,
             BindingResult result, Model model, RedirectAttributes redirectAttrs) {
         if (result.hasErrors()) {
             model.addAttribute("formDto", formDto);
@@ -103,7 +108,7 @@ public class UserController {
     @PreAuthorize("#id == principal.id")
     @RequestMapping(value = "user/{id}", method = RequestMethod.POST)
     public String update(@PathVariable("id") int id,
-                @ModelAttribute("formDto") @Validated SignUpFormDto formDto,
+                @ModelAttribute("formDto") @Validated({Default.class, Edit.class}) SignUpFormDto formDto,
                 BindingResult result, Model model, RedirectAttributes redirectAttrs) {
         if (result.hasErrors()) {
             model.addAttribute("formDto", formDto);

@@ -2,11 +2,12 @@ package com.sample.controller;
 
 import java.util.List;
 
+import javax.validation.groups.Default;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,7 +20,9 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sample.dto.Flash;
-import com.sample.dto.SignUpFormDto;
+import com.sample.dto.UserFormDto;
+import com.sample.dto.UserFormDto.Edit;
+import com.sample.dto.UserFormDto.SignUp;
 import com.sample.entity.User;
 import com.sample.service.SessionService;
 import com.sample.service.UserService;
@@ -49,14 +52,15 @@ public class UserController {
     public ModelAndView signUp(ModelAndView mav) {
         mav.setViewName(TEMPLATE_DIR + "/signUp");
         mav.addObject("title", "Sign Up");
-        mav.addObject("formDto", new SignUpFormDto());
+        mav.addObject("formDto", new UserFormDto());
         mav.addObject("uri", "/signup");
         mav.addObject("buttonText", "Create my account");
         return mav;
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public String create(@ModelAttribute("formDto") @Validated SignUpFormDto formDto,
+    public String create(@ModelAttribute("formDto")
+            @Validated({Default.class, SignUp.class}) UserFormDto formDto,
             BindingResult result, Model model, RedirectAttributes redirectAttrs) {
         if (result.hasErrors()) {
             model.addAttribute("formDto", formDto);
@@ -84,17 +88,14 @@ public class UserController {
         return mav;
     }
 
+    @PreAuthorize("#id == principal.id")
     @RequestMapping(value = "user/{id}/edit")
     public String edit(@PathVariable("id") int id, Model model) {
-        if (!isCorrectUser(id)) {
-            return "redirect:/";
-        }
-
         model.addAttribute("title", "Edit");
         model.addAttribute("buttonText", "Save Changes");
 
         User user = service.findById(id);
-        SignUpFormDto formDto = new SignUpFormDto();
+        UserFormDto formDto = new UserFormDto();
         formDto.setName(user.getName());
         formDto.setEmail(user.getEmail());
         model.addAttribute("formDto", formDto);
@@ -104,14 +105,11 @@ public class UserController {
         return TEMPLATE_DIR + "/edit";
     }
 
+    @PreAuthorize("#id == principal.id")
     @RequestMapping(value = "user/{id}", method = RequestMethod.POST)
     public String update(@PathVariable("id") int id,
-                @ModelAttribute("formDto") @Validated SignUpFormDto formDto,
+                @ModelAttribute("formDto") @Validated({Default.class, Edit.class}) UserFormDto formDto,
                 BindingResult result, Model model, RedirectAttributes redirectAttrs) {
-        if (!isCorrectUser(id)) {
-            return "redirect:/";
-        }
-
         if (result.hasErrors()) {
             model.addAttribute("formDto", formDto);
             model.addAttribute("title", "Edit");
@@ -137,11 +135,6 @@ public class UserController {
             Flash flash = new Flash(true, "User deleted");
             redirectAttrs.addFlashAttribute("flash", flash);
             return "redirect:/";
-    }
-
-    private boolean isCorrectUser(int id) {
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return (id == user.getId());
     }
 
 }

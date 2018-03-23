@@ -1,5 +1,6 @@
 package com.sample.service;
 
+import org.hsqldb.lib.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -55,7 +56,7 @@ public class UserService implements UserDetailsService {
         User user = new User();
         user.setName(name);
         user.setEmail(email);
-        user.setPassword(password);
+        user.setPassword(passwordEncoder.encode(password));
         beforeSave(user);
         return repository.saveAndFlush(user);
     }
@@ -64,7 +65,9 @@ public class UserService implements UserDetailsService {
         User user = repository.findById(id);
         user.setName(name);
         user.setEmail(email);
-        user.setPassword(password);
+        if(!StringUtil.isEmpty(password)) {
+            user.setPassword(passwordEncoder.encode(password));
+        }
         beforeSave(user);
         return repository.saveAndFlush(user);
     }
@@ -76,12 +79,12 @@ public class UserService implements UserDetailsService {
     private User beforeSave(User user) {
         String email = user.getEmail().toLowerCase();
         user.setEmail(email);
-
-        String password = user.getPassword();
-        String passwordDigest = passwordEncoder.encode(password);
-        user.setPassword(passwordDigest);
-
-        user.setRole("ROLE_USER");
+        if("ADMIN".equals(user.getRole())) {
+            return user;
+        } else {
+            user.setRole("USER");
+        }
         return user;
     }
+
 }

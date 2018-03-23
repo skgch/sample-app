@@ -79,12 +79,11 @@ public class UserService implements UserDetailsService {
     private User beforeSave(User user) {
         String email = user.getEmail().toLowerCase();
         user.setEmail(email);
-
-//        String password = user.getPassword();
-//        String passwordDigest = passwordEncoder.encode(password);
-//        user.setPassword(passwordDigest);
-
-        user.setRole("ROLE_USER");
+        if("ADMIN".equals(user.getRole())) {
+            return user;
+        } else {
+            user.setRole("USER");
+        }
         return user;
     }
 

@@ -8,7 +8,7 @@ import com.sample.validator.PasswordLength;
 import com.sample.validator.PasswordMatches;
 
 @PasswordMatches
-public class SignUpFormDto {
+public class UserFormDto {
 
     public static interface SignUp {
     }

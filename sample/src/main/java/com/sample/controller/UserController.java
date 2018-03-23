@@ -20,9 +20,9 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sample.dto.Flash;
-import com.sample.dto.SignUpFormDto;
-import com.sample.dto.SignUpFormDto.Edit;
-import com.sample.dto.SignUpFormDto.SignUp;
+import com.sample.dto.UserFormDto;
+import com.sample.dto.UserFormDto.Edit;
+import com.sample.dto.UserFormDto.SignUp;
 import com.sample.entity.User;
 import com.sample.service.SessionService;
 import com.sample.service.UserService;
@@ -52,7 +52,7 @@ public class UserController {
     public ModelAndView signUp(ModelAndView mav) {
         mav.setViewName(TEMPLATE_DIR + "/signUp");
         mav.addObject("title", "Sign Up");
-        mav.addObject("formDto", new SignUpFormDto());
+        mav.addObject("formDto", new UserFormDto());
         mav.addObject("uri", "/signup");
         mav.addObject("buttonText", "Create my account");
         return mav;
@@ -60,7 +60,7 @@ public class UserController {
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
     public String create(@ModelAttribute("formDto")
-            @Validated({Default.class, SignUp.class}) SignUpFormDto formDto,
+            @Validated({Default.class, SignUp.class}) UserFormDto formDto,
             BindingResult result, Model model, RedirectAttributes redirectAttrs) {
         if (result.hasErrors()) {
             model.addAttribute("formDto", formDto);
@@ -95,7 +95,7 @@ public class UserController {
         model.addAttribute("buttonText", "Save Changes");
 
         User user = service.findById(id);
-        SignUpFormDto formDto = new SignUpFormDto();
+        UserFormDto formDto = new UserFormDto();
         formDto.setName(user.getName());
         formDto.setEmail(user.getEmail());
         model.addAttribute("formDto", formDto);
@@ -108,7 +108,7 @@ public class UserController {
     @PreAuthorize("#id == principal.id")
     @RequestMapping(value = "user/{id}", method = RequestMethod.POST)
     public String update(@PathVariable("id") int id,
-                @ModelAttribute("formDto") @Validated({Default.class, Edit.class}) SignUpFormDto formDto,
+                @ModelAttribute("formDto") @Validated({Default.class, Edit.class}) UserFormDto formDto,
                 BindingResult result, Model model, RedirectAttributes redirectAttrs) {
         if (result.hasErrors()) {
             model.addAttribute("formDto", formDto);
